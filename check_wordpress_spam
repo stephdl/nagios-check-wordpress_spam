@@ -7,9 +7,12 @@
 ## Variables
 wordpress_database="anteverse"
 timediff_limit=4
+#the user nagios cannot connect to mariadb, think to use a user that is allowed to connect to the database
+user=wordpress
+password=password
 
 ## Get comments number in timediff_limit hours past
-comments_number=$(mysql -sNe "SELECT COUNT(c.comment_date) FROM $wordpress_database.wp_comments as c where hour(timediff( localtime(), c.comment_date ) ) < $timediff_limit;")
+comments_number=$(mysql -u $user -p$password -sNe "SELECT COUNT(c.comment_date) FROM $wordpress_database.wp_comments as c where hour(timediff( localtime(), c.comment_date ) ) < $timediff_limit;")
 
 ## Output format
 output_prefix="WORDPRESS SPAM"
